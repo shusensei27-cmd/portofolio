@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mobile Legends — Arena Strategi & Komunitas</title>
+<meta name="description" content="Mobile Legends: Bang Bang — pengalaman MOBA mobile, strategi 5v5, komunitas besar, hero unik. Halaman promo kompleks dengan animasi futuristik, galeri, slider, testimoni, dan banyak lagi." />
+<style>
+  /* =======================
+     RESET & BASE
+     ======================= */
+  * {box-sizing: border-box; margin:0; padding:0}
+  html,body{height:100%}
+  body{
+    font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(30,144,255,0.06), transparent 6%),
+                radial-gradient(900px 500px at 90% 80%, rgba(106,17,203,0.04), transparent 6%),
+                linear-gradient(180deg,#03050a 0%, #081026 100%);
+    color: #eaf3ff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+    line-height:1.6;
+  }
+
+  /* =======================
+     LAYOUT
+     ======================= */
+  .wrap{max-width:1200px;margin:0 auto;padding:28px}
+  header{
+    display:flex;
+    gap:20px;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 0;
+  }
+  .brand{
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+  .brand .logo{
+    width:62px;height:62px;border-radius:14px;
+    background:linear-gradient(135deg,#1e90ff,#6a11cb);
+    display:flex;align-items:center;justify-content:center;font-weight:800;
+    color:#04102a;font-size:18px;box-shadow:0 8px 26px rgba(30,144,255,0.12);
+  }
+  .brand h1{font-size:20px;margin:0;color:#fff;letter-spacing:0.2px}
+  nav{display:flex;gap:16px;align-items:center}
+  nav a{color:#9fcaff;text-decoration:none;font-weight:600;padding:8px 12px;border-radius:8px}
+  nav a:hover{background:rgba(255,255,255,0.03);color:#fff;transform:translateY(-2px)}
+
+  /* =======================
+     HERO SECTION
+     ======================= */
+  .hero{
+    margin-top:18px;
+    border-radius:16px;
+    padding:40px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+    position:relative;overflow:hidden;
+  }
+  .hero-grid{display:grid;grid-template-columns:1fr 420px;gap:32px;align-items:center}
+  .hero h2{
+    font-size:36px;
+    line-height:1.03;
+    margin-bottom:14px;
+    background:linear-gradient(90deg,#9be2ff 0%, #fff1a8 40%, #a8b0ff 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    font-weight:800;
+    letter-spacing:-0.6px;
+    text-shadow:0 6px 26px rgba(30,144,255,0.08);
+  }
+  .hero p.lead{color:#b9cfe8;font-size:16px;max-width:680px;margin-bottom:18px}
+  .hero .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+  .btn-primary{
+    background:linear-gradient(90deg,#1e90ff,#6a11cb);
+    color:#04102a;padding:14px 20px;border-radius:12px;font-weight:800;text-decoration:none;
+    box-shadow:0 10px 30px rgba(30,144,255,0.12);
+  }
+  .btn-secondary{
+    background:transparent;border:1px solid rgba(255,255,255,0.06);padding:12px 18px;border-radius:12px;color:#cfe8ff;
+    text-decoration:none;font-weight:700;backdrop-filter: blur(4px);
+  }
+  .hero .badge {display:inline-block;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.03);color:#9ad0ff;font-weight:700;margin-top:10px}
+
+  /* neon grid background */
+  .grid-bg{
+    position:absolute; inset:0; opacity:0.06; pointer-events:none;
+    background-image:
+      linear-gradient(transparent 92%, rgba(150,200,255,0.04) 92%),
+      linear-gradient(90deg, transparent 92%, rgba(150,200,255,0.04) 92%);
+    background-size: 30px 30px, 30px 30px;
+    transform:translateZ(0);
+  }
+
+  /* hero card right - slider placeholder */
+  .hero-right{
+    display:flex;flex-direction:column;gap:14px;align-items:center;
+  }
+  .slider{
+    width:100%;height:260px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.04);
+    background:linear-gradient(180deg, rgba(10,14,24,0.6), rgba(10,14,24,0.4));
+    position:relative;box-shadow:0 8px 40px rgba(10,14,28,0.6)
+  }
+  .slide{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    transition:opacity .8s cubic-bezier(.2,.9,.2,1), transform .8s;opacity:0;
+  }
+  .slide.active{opacity:1;transform:translateY(0)}
+  .slide .hero-art{
+    width:86%;height:86%;border-radius:10px;background:linear-gradient(180deg, rgba(30,40,60,0.6), rgba(60,10,60,0.06));
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .slide .hero-art .name{font-size:20px;letter-spacing:0.6px}
+
+  .slider-controls{display:flex;gap:8px;justify-content:center;margin-top:8px}
+  .dot{width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,0.04);cursor:pointer}
+  .dot.active{background:linear-gradient(90deg,#1e90ff,#6a11cb);box-shadow:0 6px 18px rgba(30,144,255,0.12)}
+
+  /* =======================
+     MAIN CONTENT GRID
+     ======================= */
+  .main-grid{display:grid;grid-template-columns: 2fr 1fr; gap:28px; margin-top:28px}
+  .article{
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));
+    border-radius:14px;padding:26px;border:1px solid rgba(255,255,255,0.03);
+  }
+  .article h3{color:#fff;font-size:22px;margin-bottom:12px}
+  .article p{color:#cfe7ff;margin-bottom:12px}
+  .highlight { background: linear-gradient(90deg, rgba(30,144,255,0.12), rgba(106,17,203,0.06)); padding:10px;border-radius:10px;margin:14px 0;color:#dff1ff;font-weight:700 }
+
+  /* =======================
+     HERO CARDS / LIST
+     ======================= */
+  .hero-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .hero-card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
+    display:flex;gap:12px;align-items:center;transition:transform .22s, box-shadow .22s;
+  }
+  .hero-card:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(20,90,160,0.12)}
+  .hero-thumb{width:72px;height:72px;border-radius:10px;background:linear-gradient(135deg,#6a11cb,#1e90ff);display:flex;align-items:center;justify-content:center;font-weight:800}
+  .hero-meta h4{margin:0;font-size:16px}
+  .hero-meta p{margin:4px 0;color:#9fbfe6;font-size:13px}
+
+  /* =======================
+     SIDEBAR (gallery, stats, countdown)
+     ======================= */
+  .sidebar{position:relative;display:flex;flex-direction:column;gap:14px}
+  .card-ghost{padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.006));border:1px solid rgba(255,255,255,0.03)}
+  .gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+  .gallery img{width:100%;height:90px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,0.03)}
+  .progress-wrap{height:8px;background:rgba(255,255,255,0.04);border-radius:999px;overflow:hidden}
+  .progress{height:100%;width:0;background:linear-gradient(90deg,#1e90ff,#6a11cb)}
+
+  /* countdown */
+  .countdown{display:flex;gap:8px;justify-content:center}
+  .countdown .unit{background:rgba(255,255,255,0.02);padding:10px 12px;border-radius:8px;text-align:center}
+  .countdown .unit .n{font-weight:800;color:#fff;font-size:20px}
+  .countdown .unit .label{font-size:12px;color:#9fbfe6}
+
+  /* =======================
+     TESTIMONIALS & CAROUSEL
+     ======================= */
+  .testimonials{display:flex;flex-direction:column;gap:12px}
+  .testi-card{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+  .testi-card p{color:#dff1ff}
+  .testi-meta{display:flex;gap:10px;align-items:center;margin-top:8px}
+  .avatar{width:40px;height:40px;border-radius:999px;background:linear-gradient(90deg,#fff,#cfe8ff);display:flex;align-items:center;justify-content:center;color:#061026;font-weight:800}
+
+  /* =======================
+     MAP / FOOTER CTA
+     ======================= */
+  .cta-banner{
+    margin-top:26px;padding:22px;border-radius:12px;background:linear-gradient(90deg, rgba(30,144,255,0.08), rgba(106,17,203,0.06));
+    display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid rgba(255,255,255,0.03)
+  }
+  .cta-banner .download{display:flex;gap:12px}
+  .store-btn{background:#0a1220;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);display:flex;gap:10px;align-items:center;color:#fff;text-decoration:none}
+  .store-btn svg{width:18px;height:18px;opacity:0.95}
+
+  footer{margin-top:36px;padding:40px 0;color:#98bfe8;text-align:center;font-size:14px}
+
+  /* =======================
+     POPUP (download prompt)
+     ======================= */
+  .popup{
+    position:fixed;right:24px;bottom:24px;background:linear-gradient(180deg,#08162b,#071225);padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.04);
+    box-shadow:0 20px 60px rgba(2,6,23,0.7);z-index:200;display:flex;gap:12px;align-items:center;
+    transform:translateY(20px);opacity:0;transition:all .44s cubic-bezier(.2,.9,.2,1)
+  }
+  .popup.show{transform:translateY(0);opacity:1}
+  .popup .small{font-size:13px;color:#cfe8ff;font-weight:700}
+  .popup .x{cursor:pointer;color:#9fbfe6;padding:6px;border-radius:8px}
+
+  /* =======================
+     PARTICLES BACKGROUND (canvas) layer
+     ======================= */
+  #particles{
+    position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.45;
+    mix-blend-mode:screen;
+  }
+
+  /* =======================
+     RESPONSIVE
+     ======================= */
+  @media(max-width:1024px){
+    .hero-grid{grid-template-columns:1fr 360px}
+    .main-grid{grid-template-columns:1fr}
+    .hero-list{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:640px){
+    .wrap{padding:12px}
+    .hero-grid{grid-template-columns:1fr}
+    .slider{height:200px}
+    .hero-right{align-items:stretch}
+    .hero h2{font-size:26px}
+  }
+
+  /* small accessibility & utility */
+  .muted{color:#9fbfe6;font-size:13px}
+  .tiny{font-size:13px;color:#9fbfe6}
+  .sr-only{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+</style>
+</head>
+<body>
+  <canvas id="particles"></canvas>
+
+  <div class="wrap" style="position:relative;z-index:3">
+    <header>
+      <div class="brand">
+        <div class="logo">ML</div>
+        <div>
+          <h1>Mobile Legends — Arena Strategi & Komunitas</h1>
+          <div class="tiny">Main cepat, koordinasi nyata, jadi legenda</div>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <a href="#overview">Overview</a>
+        <a href="#heroes">Heroes</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#testimonials">Testimoni</a>
+        <a href="#download-cta">Download</a>
+      </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" id="overview" aria-labelledby="heroTitle">
+      <div class="grid-bg" aria-hidden="true"></div>
+      <div class="hero-grid">
+        <div>
+          <div class="badge">Gratis. Multiplayer. Kompetitif.</div>
+          <h2 id="heroTitle">Masuk ke Arena — Taktik, Kecepatan, dan Kerja Sama</h2>
+          <p class="lead">Mobile Legends menggabungkan strategi mendalam dengan aksi cepat. Setiap pertandingan adalah ujian bagi kemampuan adaptasi, koordinasi tim, dan pengambilan keputusan. Dari casual play hingga ranked climb — pengalaman MOBA sejati ada di sini.</p>
+
+          <div class="cta-row">
+            <a class="btn-primary" href="#download-cta">Mainkan Sekarang</a>
+            <a class="btn-secondary" href="#heroes">Telaah Heroes</a>
+          </div>
+
+          <div style="margin-top:18px;">
+            <span class="muted">Komunitas aktif • Turnamen • Update berkala</span>
+          </div>
+        </div>
+
+        <aside class="hero-right" aria-hidden="false">
+          <div class="slider" id="heroSlider" role="region" aria-label="Slider hero">
+            <div class="slide active" data-index="0">
+              <div class="hero-art">
+                <div style="text-align:center">
+                  <div style="font-size:40px">F</div>
+                  <div class="name">Fighter — Example</div>
+                </div>
+              </div>
+            </div>
+            <div class="slide" data-index="1">
+              <div class="hero-art">
+                <div style="text-align:center">
+                  <div style="font-size:40px">A</div>
+                  <div class="name">Assassin — Example</div>
+                </div>
+              </div>
+            </div>
+            <div class="slide" data-index="2">
+              <div class="hero-art">
+                <div style="text-align:center">
+                  <div style="font-size:40px">M</div>
+                  <div class="name">Mage — Example</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="slider-controls" aria-hidden="false">
+            <div class="dot active" data-dot="0" tabindex="0" role="button" aria-label="Slide 1"></div>
+            <div class="dot" data-dot="1" tabindex="0" role="button" aria-label="Slide 2"></div>
+            <div class="dot" data-dot="2" tabindex="0" role="button" aria-label="Slide 3"></div>
+          </div>
+
+          <div style="width:100%;display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+            <div class="tiny">Rating komunitas: <strong style="color:#fff">4.7/5</strong></div>
+            <div class="tiny">Pemain aktif: <strong style="color:#fff">+200M</strong></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- MAIN GRID -->
+    <div class="main-grid" style="margin-top:24px">
+
+      <!-- ARTICLE LEFT -->
+      <section class="article" id="deepArticle" aria-labelledby="articleTitle">
+        <h3 id="articleTitle">Mengapa Mobile Legends Layak Dicoba — Lebih Dari Sekadar Game</h3>
+        <p>Mobile Legends telah melahirkan ekosistem permainan yang komprehensif: kompetisi, komunitas, kreativitas, dan momen bersama teman. Di sini kami membahas aspek-aspek yang membuat game ini tidak hanya menarik, tetapi juga berharga sebagai pengalaman sosial digital.</p>
+
+        <div class="highlight">Ringkasan cepat: Strategi 5v5 • Hero beragam • Pertandingan singkat (10–15 menit) • Komunitas aktif</div>
+
+        <h4 style="margin-top:12px;color:#bfe0ff">Ritme Permainan yang Tepat untuk Semua</h4>
+        <p>Setiap match di Mobile Legends dirancang agar cepat namun penuh dinamika. Durasi singkat membuat pemain dapat menikmati pengalaman kompetitif tanpa harus meninggalkan rutinitas harian. Untuk pelajar dan pekerja, ini artinya: latihan yang terukur, kemajuan setiap hari, dan kesempatan untuk berebut ranking saat ada waktu senggang.</p>
+
+        <h4 style="margin-top:12px;color:#bfe0ff">Hero & Peran — Pilihan Strategi Tanpa Batas</h4>
+        <p>Dengan ratusan hero yang terus bertambah, pilihan peran memperkaya pengalaman bermain. Assassin yang cepat mengejar musuh, Tank yang menahan serangan, Mage yang mengambil alih team fight dengan skill area — semuanya memberi variasi dan kedalaman strategis.</p>
+
+        <p>Selain role meta, build item dan kombinasi skill memungkinkan improvisasi taktis, membuat setiap match berpotensi menghasilkan momen tak terduga: comeback epik, outplay kreatif, atau koordinasi tim yang memukau.</p>
+
+        <h4 style="margin-top:12px;color:#bfe0ff">Sosial & Komunitas</h4>
+        <p>Lebih dari sekadar bermain: Mobile Legends memfasilitasi pembentukan komunitas lokal dan online. Guild, turnamen komunitas, dan fitur party membuat pemain bertemu teman baru, belajar bersama, dan membangun rivalitas sehat. Interaksi semacam ini sering berujung pada kolaborasi konten, streaming, dan event komunitas yang memicu kreativitas pemain.</p>
+
+        <h4 style="margin-top:12px;color:#bfe0ff">Teknologi & Performa</h4>
+        <p>Optimasi untuk berbagai perangkat memungkinkan gameplay mulus di smartphone mid-range sekalipun. Pengaturan grafis yang adaptif dan optimasi jaringan mengurangi lag dan memberikan pengalaman lebih stabil saat mabar (main bareng) atau saat mengikuti turnamen online.</p>
+
+        <h4 style="margin-top:12px;color:#bfe0ff">Integrasi Esports</h4>
+        <p>Bagi yang bercita-cita ke level kompetitif, ekosistem esports Mobile Legends menyediakan jalur jelas: dari turnamen komunitas ke liga pro — tempat skill dan dedikasi diuji. Banyak pemain yang memulai di match casual lalu berkembang menjadi pemain kompetitif profesional.</p>
+
+        <h4 style="margin-top:12px;color:#bfe0ff">Fitur Kreatif & Estetika</h4>
+        <p>Skin, efek visual, dan animasi hero memberikan identitas yang personal. Penggemar dapat mengoleksi skin favorit, mengekspresikan gaya bermain, atau menonjol di arena dengan tampilan epik. Desain seni hero terus diperbarui agar tetap fresh dan relevan secara estetika.</p>
+
+        <h4 style="margin-top:12px;color:#bfe0ff">Security & Fair Play</h4>
+        <p>Pengembang berfokus pada sistem anti-cheat dan kebijakan fair-play agar pengalaman tetap sehat. Sistem pelaporan, penalti untuk perilaku buruk, dan upaya moderasi komunitas membantu menjaga atmosfer permainan yang seru dan aman untuk semua usia.</p>
+
+        <h4 style="margin-top:12px;color:#bfe0ff">Kesimpulan — Kenapa Kamu Harus Coba?</h4>
+        <p>Mobile Legends menawarkan keseimbangan antara intensitas kompetitif dan kemudahan akses. Jika kamu menyukai permainan yang menuntut strategi, refleks, dan kerja sama — Mobile Legends memberi semuanya dalam genggaman. Bergabunglah, temukan gaya bermainmu, dan tumbuhkan skill hingga menjadi legenda.</p>
+
+        <div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap">
+          <a class="btn-primary" href="#download-cta">Download & Main Sekarang</a>
+          <a class="btn-secondary" href="#heroes">Tinjau Heroes</a>
+        </div>
+
+        <!-- HERO LIST (feature 2) -->
+        <h3 style="margin-top:28px">Daftar Pilihan Hero Populer</h3>
+        <div class="hero-list" aria-label="Hero list">
+          <div class="hero-card">
+            <div class="hero-thumb">AK</div>
+            <div class="hero-meta">
+              <h4>Akira (Assassin)</h4>
+              <p>Mobilitas tinggi, burst damage mematikan.</p>
+            </div>
+          </div>
+          <div class="hero-card">
+            <div class="hero-thumb">LB</div>
+            <div class="hero-meta">
+              <h4>Lea (Mage)</h4>
+              <p>Area control & crowd control unggul.</p>
+            </div>
+          </div>
+          <div class="hero-card">
+            <div class="hero-thumb">TR</div>
+            <div class="hero-meta">
+              <h4>Torga (Tank)</h4>
+              <p>Pemimpin teamfight, proteksi tim maksimal.</p>
+            </div>
+          </div>
+          <div class="hero-card">
+            <div class="hero-thumb">VA</div>
+            <div class="hero-meta">
+              <h4>Vance (Marksman)</h4>
+              <p>DPS konsisten, carry late-game andalan.</p>
+            </div>
+          </div>
+          <div class="hero-card">
+            <div class="hero-thumb">SY</div>
+            <div class="hero-meta">
+              <h4>Syl (Fighter)</h4>
+              <p>Durable & sustain di lane.</p>
+            </div>
+          </div>
+          <div class="hero-card">
+            <div class="hero-thumb">OL</div>
+            <div class="hero-meta">
+              <h4>Orla (Support)</h4>
+              <p>Heal & buff, mendukung tim saat push.</p>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="margin-top:28px">Taktik Singkat: Tips Untuk Pemula</h3>
+        <p>1. Pahami role yang kamu pilih — jangan tergoda memainkan semua peran sekaligus. Fokus pada 2-3 hero agar mastery meningkat cepat.</p>
+        <p>2. Efektifkan communication — gunakan ping & chat singkat untuk menunjukkan target dan menghindari missplay.</p>
+        <p>3. Rotasi map — setelah push, sering-seringlah membantu lane lain untuk menjaga tempo permainan.</p>
+        <p>4. Item build adaptif — jangan terpaku pada build; sesuaikan item dengan kondisi match.</p>
+
+        <h3 style="margin-top:28px">Artikel Panjang: Pengalaman Pemain — Cerita Nyata</h3>
+        <p>Salah satu pemain amatir membagikan kisahnya: “Mulai dari rank Bronze, saya belajar 2 hero dan fokus pada positioning. Setelah konsisten latihan dan berdiskusi dengan squad, saya naik ke rank Legend. Rasanya luar biasa ketika kerja keras tim berbuah kemenangan.”</p>
+
+        <p>Cerita seperti ini umum ditemui di komunitas. Game memberikan ruang untuk berkembang, berkolaborasi, dan merasakan kepuasan saat strategi berhasil.</p>
+      </section>
+
+      <!-- SIDEBAR RIGHT -->
+      <aside class="sidebar">
+
+        <!-- GALLERY (feature 8) -->
+        <div class="card-ghost" id="gallery">
+          <h4 style="margin:0 0 10px 0">Galeri Skin & Artwork</h4>
+          <div class="gallery" aria-label="gallery images">
+            <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='100%25' height='100%25' fill='%231e90ff'/%3E%3Ctext x='50%25' y='50%25' font-size='28' text-anchor='middle' fill='%23ffffff' font-family='Arial'>Skin 1</text>%3C/svg%3E" alt="Skin 1">
+            <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='100%25' height='100%25' fill='%236a11cb'/%3E%3Ctext x='50%25' y='50%25' font-size='28' text-anchor='middle' fill='%23ffffff' font-family='Arial'>Skin 2</text>%3C/svg%3E" alt="Skin 2">
+            <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='100%25' height='100%25' fill='%230b3a6e'/%3E%3Ctext x='50%25' y='50%25' font-size='28' text-anchor='middle' fill='%23ffffff' font-family='Arial'>Skin 3</text>%3C/svg%3E" alt="Skin 3">
+            <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='100%25' height='100%25' fill='%230c1020'/%3E%3Ctext x='50%25' y='50%25' font-size='28' text-anchor='middle' fill='%23ffffff' font-family='Arial'>Skin 4</text>%3C/svg%3E" alt="Skin 4">
+          </div>
+        </div>
+
+        <!-- PROGRESS BAR (feature 6) -->
+        <div class="card-ghost">
+          <h4 style="margin:0 0 10px 0">Progres Pembelajaran Hero</h4>
+          <div class="tiny">Level mastery — kamu bisa tingkatkan skill dengan latihan</div>
+          <div style="margin-top:12px" class="progress-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="progress" id="skillProgress" style="width:0%"></div>
+          </div>
+          <div style="margin-top:8px" class="tiny" id="skillProgressTxt">0% mastery</div>
+        </div>
+
+        <!-- COUNTDOWN (feature 10) -->
+        <div class="card-ghost">
+          <h4 style="margin:0 0 10px 0">Countdown — Next Season (Placeholder)</h4>
+          <div class="countdown" id="countdown" aria-live="polite">
+            <div class="unit"><div class="n" id="cdDays">00</div><div class="label">Hari</div></div>
+            <div class="unit"><div class="n" id="cdHours">00</div><div class="label">Jam</div></div>
+            <div class="unit"><div class="n" id="cdMinutes">00</div><div class="label">Menit</div></div>
+            <div class="unit"><div class="n" id="cdSeconds">00</div><div class="label">Detik</div></div>
+          </div>
+        </div>
+
+        <!-- TESTIMONIALS (feature 9) -->
+        <div class="card-ghost" id="testimonials">
+          <h4 style="margin:0 0 10px 0">Testimoni Pemain</h4>
+          <div class="testimonials">
+            <div class="testi-card">
+              <p>"Game ini bikin saya ketagihan — mekanik yang adil dan komunitas yang asyik untuk belajar."</p>
+              <div class="testi-meta"><div class="avatar">AR</div><div class="tiny">Arya, 21 • Streamer amatir</div></div>
+            </div>
+            <div class="testi-card">
+              <p>"Match cepat sangat cocok buat yang sibuk — tetap bisa berkompetisi tanpa waktu lama."</p>
+              <div class="testi-meta"><div class="avatar">DM</div><div class="tiny">Dimas, 27 • Mahasiswa</div></div>
+            </div>
+            <div class="testi-card">
+              <p>"Saya suka kombinasi strategi dan refleks. Setiap kemenangan terasa prestasi."</p>
+              <div class="testi-meta"><div class="avatar">NA</div><div class="tiny">Nadia, 19 • Content creator</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLE ROLE COMPARISON (feature 11) -->
+        <div class="card-ghost" style="overflow:auto">
+          <h4 style="margin:0 0 10px 0">Perbandingan Role Hero (Ringkas)</h4>
+          <table style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="text-align:left;color:#9fbfe6;font-size:13px">
+                <th style="padding:8px 6px">Role</th>
+                <th style="padding:8px 6px">Fungsi</th>
+                <th style="padding:8px 6px">Kapan Dipilih</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding:8px 6px">Assassin</td><td style="padding:8px 6px">Eliminasi cepat target utama</td><td style="padding:8px 6px">Butuh burst & flank</td></tr>
+              <tr><td style="padding:8px 6px">Marksman</td><td style="padding:8px 6px">Sumber DPS utama late-game</td><td style="padding:8px 6px">Butuh proteksi & farm</td></tr>
+              <tr><td style="padding:8px 6px">Tank</td><td style="padding:8px 6px">Inisiasi & peeling</td><td style="padding:8px 6px">Saat butuh frontline</td></tr>
+              <tr><td style="padding:8px 6px">Support</td><td style="padding:8px 6px">Heal & buff — kontrol map</td><td style="padding:8px 6px">Untuk team sustain</td></tr>
+              <tr><td style="padding:8px 6px">Mage</td><td style="padding:8px 6px">Burst & zoning</td><td style="padding:8px 6px">Untuk control fight</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- PARALLAX / INFO STRIP (feature 7) -->
+    <section style="margin-top:28px;padding:22px;border-radius:12px;background:linear-gradient(90deg, rgba(30,144,255,0.04), rgba(106,17,203,0.03));border:1px solid rgba(255,255,255,0.03)">
+      <div style="display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap">
+        <div style="flex:1;min-width:260px">
+          <h4 style="margin:0 0 8px 0">Parallax Visual — Teknologi Ringan</h4>
+          <p class="tiny" style="margin:0">Efek parallax di halaman ini meningkatkan kedalaman visual tanpa memberatkan perangkat. Cocok untuk tampilan futuristik namun ramah performa.</p>
+        </div>
+        <div style="min-width:200px;display:flex;gap:12px;align-items:center;justify-content:flex-end">
+          <div style="text-align:right">
+            <div style="font-weight:800;font-size:20px;color:#fff">200M+</div>
+            <div class="tiny">Download global</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-weight:800;font-size:20px;color:#fff">120+</div>
+            <div class="tiny">Hero</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-weight:800;font-size:20px;color:#fff">10–15</div>
+            <div class="tiny">menit/match</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAP / CTA BANNER (end) -->
+    <div class="cta-banner" id="download-cta" style="margin-top:26px">
+      <div>
+        <h3 style="margin:0;color:#fff">Siap Gabung Arena?</h3>
+        <p class="tiny" style="margin-top:6px">Main sekarang — gratis. Latih skill, bangun tim, dan buktikan diri.</p>
+      </div>
+      <div class="download" aria-hidden="false">
+        <a class="store-btn" href="#" onclick="alert('Tautan Play Store placeholder')">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 3h18v18H3z" fill="#1e90ff" opacity="0.09"/></svg>
+          <div style="display:flex;flex-direction:column;text-align:left">
+            <small class="tiny">GET IT ON</small>
+            <strong>Play Store</strong>
+          </div>
+        </a>
+        <a class="store-btn" href="#" onclick="alert('Tautan App Store placeholder')">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 3h18v18H3z" fill="#6a11cb" opacity="0.09"/></svg>
+          <div style="display:flex;flex-direction:column;text-align:left">
+            <small class="tiny">Download on the</small>
+            <strong>App Store</strong>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <footer>
+      © 2025 Mobile Legends — Semua Hak Dilindungi. Konten ini dibuat untuk tujuan promosi & demo halaman.
+    </footer>
+  </div>
+
+  <!-- POPUP (feature 3) -->
+  <div class="popup" id="popup">
+    <div style="display:flex;flex-direction:column">
+      <div class="small">Download sekarang dan rasakan sensasi MOBA di genggamanmu</div>
+      <div style="margin-top:6px;display:flex;gap:8px">
+        <a class="store-btn" href="#" onclick="alert('Play Store placeholder')" style="padding:8px 10px">Play Store</a>
+        <a class="store-btn" href="#" onclick="alert('App Store placeholder')" style="padding:8px 10px">App Store</a>
+      </div>
+    </div>
+    <div style="margin-left:10px;display:flex;flex-direction:column;align-items:center;gap:6px">
+      <div class="x" id="popupClose" title="Tutup">✕</div>
+      <div class="tiny">Gratis • Multiplayer</div>
+    </div>
+  </div>
+
+<script>
+/* =========================
+   PARTICLES BACKGROUND (feature 4)
+   Lightweight particle engine using canvas
+   ========================= */
+(function(){
+  const canvas = document.getElementById('particles');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w = canvas.width = innerWidth;
+  let h = canvas.height = innerHeight;
+  window.addEventListener('resize', () => {
+    w = canvas.width = innerWidth;
+    h = canvas.height = innerHeight;
+  });
+
+  const num = Math.round((w*h)/70000); // adapt density
+  const particles = [];
+  for(let i=0;i<num;i++){
+    particles.push({
+      x: Math.random()*w,
+      y: Math.random()*h,
+      vx: (Math.random()-0.5)*0.2,
+      vy: (Math.random()-0.5)*0.2,
+      r: Math.random()*1.8 + 0.6,
+      hue: 200 + Math.random()*60
+    });
+  }
+
+  function update(){
+    ctx.clearRect(0,0,w,h);
+    for(let p of particles){
+      p.x += p.vx;
+      p.y += p.vy;
+      if(p.x < 0) p.x = w;
+      if(p.x > w) p.x = 0;
+      if(p.y < 0) p.y = h;
+      if(p.y > h) p.y = 0;
+      const g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*6);
+      g.addColorStop(0, `hsla(${p.hue},100%,70%,0.12)`);
+      g.addColorStop(0.6, `hsla(${p.hue},100%,70%,0.06)`);
+      g.addColorStop(1, `rgba(255,255,255,0)`);
+      ctx.beginPath();
+      ctx.fillStyle = g;
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fill();
+    }
+    requestAnimationFrame(update);
+  }
+  update();
+})();
+
+/* =========================
+   SLIDER (feature 1)
+   ========================= */
+(function(){
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+  let idx = 0;
+  function show(i){
+    slides.forEach(s=>s.classList.remove('active'));
+    dots.forEach(d=>d.classList.remove('active'));
+    slides[i].classList.add('active');
+    dots[i].classList.add('active');
+  }
+  function next(){
+    idx = (idx+1)%slides.length;
+    show(idx);
+  }
+  let timer = setInterval(next, 4000);
+  dots.forEach(d=>{
+    d.addEventListener('click', ()=>{
+      clearInterval(timer);
+      idx = Number(d.dataset.dot);
+      show(idx);
+      timer = setInterval(next, 4000);
+    });
+    d.addEventListener('keydown', (e)=>{
+      if(e.key==='Enter'){ d.click(); }
+    });
+  });
+})();
+
+/* =========================
+   SHOW POPUP AFTER DELAY (feature 3)
+   ========================= */
+(function(){
+  const popup = document.getElementById('popup');
+  const close = document.getElementById('popupClose');
+  setTimeout(()=> popup.classList.add('show'), 2800);
+  close.addEventListener('click', ()=> popup.classList.remove('show'));
+})();
+
+/* =========================
+   PROGRESS BAR ON SCROLL (feature 6)
+   Simulate mastery progress when visible
+   ========================= */
+(function(){
+  const prog = document.getElementById('skillProgress');
+  const progTxt = document.getElementById('skillProgressTxt');
+  let triggered=false;
+  function check(){
+    const rect = prog.getBoundingClientRect();
+    if(!triggered && rect.top < innerHeight - 80){
+      triggered=true;
+      let width = 0;
+      const target = 78; // example
+      const t = setInterval(()=>{
+        width++;
+        prog.style.width = width + '%';
+        progTxt.textContent = width + '% mastery';
+        if(width>=target) clearInterval(t);
+      },20);
+    }
+  }
+  window.addEventListener('scroll', check);
+  check();
+})();
+
+/* =========================
+   COUNTDOWN (feature 10)
+   non-specific informative countdown
+   ========================= */
+(function(){
+  // set target to 7 days from now as placeholder
+  const now = new Date();
+  const target = new Date(now.getTime() + 7*24*60*60*1000);
+  const dEl = document.getElementById('cdDays');
+  const hEl = document.getElementById('cdHours');
+  const mEl = document.getElementById('cdMinutes');
+  const sEl = document.getElementById('cdSeconds');
+
+  function update(){
+    const now = new Date();
+    const diff = Math.max(0, target - now);
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
+    const seconds = Math.floor((diff % (1000*60)) / 1000);
+    dEl.textContent = String(days).padStart(2,'0');
+    hEl.textContent = String(hours).padStart(2,'0');
+    mEl.textContent = String(minutes).padStart(2,'0');
+    sEl.textContent = String(seconds).padStart(2,'0');
+  }
+  update(); setInterval(update, 1000);
+})();
+
+/* =========================
+   PARALLAX ON SCROLL (feature 7)
+   Simple parallax effect for hero title and background
+   ========================= */
+(function(){
+  const hero = document.querySelector('.hero');
+  if(!hero) return;
+  window.addEventListener('scroll', ()=>{
+    const y = window.scrollY;
+    hero.style.transform = `translateY(${y*0.02}px)`;
+  });
+})();
+
+/* =========================
+   GALLERY LIGHTBOX (feature 8)
+   basic modal to enlarge images
+   ========================= */
+(function(){
+  const imgs = document.querySelectorAll('.gallery img');
+  imgs.forEach(img=>{
+    img.style.cursor='pointer';
+    img.addEventListener('click', ()=>{
+      const modal = document.createElement('div');
+      modal.style.position='fixed';modal.style.inset=0;modal.style.background='rgba(2,6,23,0.86)';
+      modal.style.display='flex';modal.style.alignItems='center';modal.style.justifyContent='center';modal.style.zIndex=9999;
+      const clone = img.cloneNode();
+      clone.style.width='80%';clone.style.height='auto';clone.style.borderRadius='8px';
+      modal.appendChild(clone);
+      modal.addEventListener('click', ()=>document.body.removeChild(modal));
+      document.body.appendChild(modal);
+    });
+  });
+})();
+
+/* =========================
+   SIMPLE AUDIO EFFECTS (feature 5)
+   small beep on button hover (data uri)
+   ========================= */
+(function(){
+  const hoverSound = new Audio("data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAAAA=");
+  document.querySelectorAll('.btn-primary,.btn-secondary,.store-btn').forEach(el=>{
+    el.addEventListener('mouseenter', ()=>{ try{ hoverSound.currentTime=0; hoverSound.play(); }catch(e){} });
+  });
+})();
+
+/* =========================
+   SIMPLE SCROLL PROGRESS (visual on top)
+   ========================= */
+(function(){
+  const progBar = document.createElement('div');
+  progBar.style.position='fixed';progBar.style.top=0;progBar.style.left=0;height='4px';
+  progBar.style.height='4px';progBar.style.background='linear-gradient(90deg,#1e90ff,#6a11cb)';
+  progBar.style.width='0%';progBar.style.zIndex=9999;
+  document.body.appendChild(progBar);
+  window.addEventListener('scroll', ()=>{
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = (window.scrollY / h) * 100;
+    progBar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+  });
+})();
+
+/* =========================
+   SIMPLE ANIMATIONS for testimonial rotation (makes page feel alive)
+   ========================= */
+(function(){
+  const testi = document.querySelectorAll('.testi-card');
+  let i=0;
+  setInterval(()=>{
+    testi.forEach((t,idx)=> t.style.opacity = (idx===i? '1':'0.5'));
+    i = (i+1)%testi.length;
+  },4000);
+})();
+</script>
+</body>
+</html>
